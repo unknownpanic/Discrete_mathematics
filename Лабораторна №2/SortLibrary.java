@@ -1,4 +1,8 @@
 public class SortLibrary {
+    public static int counterBubble;
+    public static int counterInsertion;
+    public static int counterSelection;
+
 
     private static void swap(int[] arr, int i, int j) {
         int temp = arr[i];
@@ -32,12 +36,13 @@ public class SortLibrary {
                 if (arr[j] > arr[j + 1]) {
                     swap(arr, j, j + 1);
                     isSorted = false;
+                    counterBubble++;
                 }
             }
         }
         long endTime = System.nanoTime();
         System.out.println("Час виконання (наносек): " + (endTime - startTime));
-        System.out.println("Складність: O(n^2)");
+        System.out.println("Складність: O(n^2):" + counterBubble);
     }
 
     public static void SortInsertion(int[] arr, int start, int end) {
@@ -50,10 +55,11 @@ public class SortLibrary {
                 j--;
             }
             arr[j] = current;
+            counterInsertion++;
         }
         long endTime = System.nanoTime();
         System.out.println("Час виконання (наносек): " + (endTime - startTime));
-        System.out.println("Складність: O(n^2)");
+        System.out.println("Складність: O(n^2): " + counterInsertion);
     }
 
     public static void SortSelection(int[] arr, int start, int end) {
@@ -61,9 +67,10 @@ public class SortLibrary {
         for (int i = start; i < end; i++) {
             int minIndex = MinItem(arr, i, end);
             swap(arr, i, minIndex);
+            counterSelection++;
         }
         long endTime = System.nanoTime();
         System.out.println("Час виконання (наносек): " + (endTime - startTime));
-        System.out.println("Складність: O(n^2)");
+        System.out.println("Складність: O(n^2): " + counterSelection);
     }
 }
