@@ -23,22 +23,15 @@ public class SortLibrary {
         return minIndex;
     }
 
-    public static int MaxItem(int[] arr, int start, int end) {
-        int maxIndex = start;
-        for (int i = start + 1; i <= end; i++) {
-            if (arr[i] > arr[maxIndex]) {
-                maxIndex = i;
-            }
-        }
-        return maxIndex;
-    }
-
     public static void SortBubble(int[] arr, int start, int end) {
         long startTime = System.nanoTime();
-        for (int i = start; i < end; i++) {
-            for (int j = start; j < end - (i - start); j++) {
+        boolean isSorted = false;
+        while(!isSorted){
+            isSorted = true;
+            for (int j = start; j < end; j++) {
                 if (arr[j] > arr[j + 1]) {
                     swap(arr, j, j + 1);
+                    isSorted = false;
                 }
             }
         }
@@ -50,13 +43,13 @@ public class SortLibrary {
     public static void SortInsertion(int[] arr, int start, int end) {
         long startTime = System.nanoTime();
         for (int i = start + 1; i <= end; i++) {
-            int key = arr[i];
-            int j = i - 1;
-            while (j >= start && arr[j] > key) {
-                arr[j + 1] = arr[j];
+            int current = arr[i];
+            int j = i;
+            while (j > start && arr[j - 1] > current) {
+                arr[j] = arr[j - 1];
                 j--;
             }
-            arr[j + 1] = key;
+            arr[j] = current;
         }
         long endTime = System.nanoTime();
         System.out.println("Час виконання (наносек): " + (endTime - startTime));
