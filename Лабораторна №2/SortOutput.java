@@ -42,6 +42,12 @@ public class SortOutput {
         int start = scanner.nextInt();
         int end = scanner.nextInt();
 
+        System.out.println("Бажаєте відсортувати масив у:");
+        System.out.println("1 - Зворотньому порядку");
+        System.out.println("2 - За зростанням");
+        int option = scanner.nextInt();
+
+
         if (start < 0 || end >= arr.length || start > end) {
             System.out.println("Некоректні індекси!");
             return;
@@ -49,13 +55,13 @@ public class SortOutput {
 
         switch (choice) {
             case 1:
-                SortLibrary.SortBubble(arr, start, end);
+                SortLibrary.SortBubble(arr, start, end, option);
                 break;
             case 2:
-                SortLibrary.SortInsertion(arr, start, end);
+                SortLibrary.SortInsertion(arr, start, end, option);
                 break;
             case 3:
-                SortLibrary.SortSelection(arr, start, end);
+                SortLibrary.SortSelection(arr, start, end, option);
                 break;
             default:
                 System.out.println("Неправильний вибір!");
