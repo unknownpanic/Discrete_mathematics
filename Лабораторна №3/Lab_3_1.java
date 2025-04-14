@@ -28,12 +28,15 @@ public class Lab_3_1 {
             A[i] = scanner.nextInt();
         }
 
+        System.out.print("Введіть k: ");
+        k = scanner.nextInt();
+
         Arrays.sort(A);
 
         System.out.println("Всі перестановки:");
         do {
-            System.out.println(Arrays.toString(A));
-        } while (Comb.GenPerm(A));
+            System.out.println(Arrays.toString(Arrays.copyOfRange(A, 0, k)));
+        } while (Comb.GenPerm(A, k));
 
         // Частина 3: Генерування сполучень
         System.out.print("Введіть n для сполучень: ");
@@ -43,7 +46,6 @@ public class Lab_3_1 {
         k = scanner.nextInt();
 
         int[] combArray = new int[k];
-
         for (int i = 0; i < k; i++) {
             combArray[i] = i + 1;
         }

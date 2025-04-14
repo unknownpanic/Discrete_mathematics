@@ -1,5 +1,6 @@
-public class Comb {
+import java.util.Arrays;
 
+public class Comb {
     private static void swap(int[] A, int i, int j) {
         int temp = A[i];
         A[i] = A[j];
@@ -7,7 +8,7 @@ public class Comb {
     }
 
     public static int factorial(int n) {
-        if (n == 0){
+        if (n == 0) {
             return 1;
         }
         return n * factorial(n - 1);
@@ -47,11 +48,11 @@ public class Comb {
         }
     }
 
-    public static boolean GenPerm(int[] A) {
+    public static boolean GenPerm(int[] A, int k) {
         int n = A.length;
-        int i = n - 2;
+        int i = k - 1;
 
-        while (i >= 0 && A[i] >= A[i + 1]) {
+        while (i >= 0 && isMaximal(A, i, k)) {
             i--;
         }
 
@@ -59,14 +60,9 @@ public class Comb {
             return false;
         }
 
-        int j = n - 1;
-        while (A[j] <= A[i]) {
-            j--;
-        }
-
+        int j = findMinGreater(A, i);
         swap(A, i, j);
-
-        SortBubble(A, i + 1, n - 1, 1);
+        Arrays.sort(A, i + 1, n);
 
         return true;
     }
@@ -90,4 +86,31 @@ public class Comb {
 
         return true;
     }
+
+    private static boolean isMaximal(int[] A, int i, int k) {
+        if (i == k - 1) {
+            int maxRight = A[i];
+            for (int j = i + 1; j < A.length; j++) {
+                if (A[j] > maxRight) {
+                    maxRight = A[j];
+                }
+            }
+            return A[i] >= maxRight;
+        }
+        return A[i] >= A[i + 1];
+    }
+
+    private static int findMinGreater(int[] A, int i) {
+        int minGreater = Integer.MAX_VALUE;
+        int minIndex = -1;
+        for (int j = i + 1; j < A.length; j++) {
+            if (A[j] > A[i] && A[j] < minGreater) {
+                minGreater = A[j];
+                minIndex = j;
+            }
+        }
+        return minIndex;
+    }
+
+
 }
