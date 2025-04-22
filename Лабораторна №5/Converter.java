@@ -2,6 +2,74 @@ import java.util.Stack;
 
 public class Converter {
 
+    public static double evaluatePostfix(String postfix, char[] variables, double[] values) {
+        Stack<Double> stack = new Stack<>();
+
+        for (char c : postfix.toCharArray()) {
+            if (Character.isLetter(c)) {
+                int index = findVariableIndex(c, variables);
+                if (index != -1) {
+                    stack.push(values[index]);
+                } else {
+                    throw new IllegalArgumentException("Не задано значення для змінної: " + c);
+                }
+            } else if (Character.isDigit(c)) {
+                stack.push((double) (c - '0'));
+            } else {
+                double operand2 = stack.pop();
+                double operand1 = stack.pop();
+                switch (c) {
+                    case '+': stack.push(operand1 + operand2); break;
+                    case '-': stack.push(operand1 - operand2); break;
+                    case '*': stack.push(operand1 * operand2); break;
+                    case '/': stack.push(operand1 / operand2); break;
+                    default: throw new IllegalArgumentException("Невідомий оператор: " + c);
+                }
+            }
+        }
+
+        return stack.pop();
+    }
+
+    public static double evaluatePrefix(String prefix, char[] variables, double[] values) {
+        Stack<Double> stack = new Stack<>();
+
+        for (int i = prefix.length() - 1; i >= 0; i--) {
+            char c = prefix.charAt(i);
+            if (Character.isLetter(c)) {
+                int index = findVariableIndex(c, variables);
+                if (index != -1) {
+                    stack.push(values[index]);
+                } else {
+                    throw new IllegalArgumentException("Не задано значення для змінної: " + c);
+                }
+            } else if (Character.isDigit(c)) {
+                stack.push((double) (c - '0'));
+            } else {
+                double operand1 = stack.pop();
+                double operand2 = stack.pop();
+                switch (c) {
+                    case '+': stack.push(operand1 + operand2); break;
+                    case '-': stack.push(operand1 - operand2); break;
+                    case '*': stack.push(operand1 * operand2); break;
+                    case '/': stack.push(operand1 / operand2); break;
+                    default: throw new IllegalArgumentException("Невідомий оператор: " + c);
+                }
+            }
+        }
+
+        return stack.pop();
+    }
+
+    private static int findVariableIndex(char variable, char[] variables) {
+        for (int i = 0; i < variables.length; i++) {
+            if (variables[i] == variable) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     public static String infixToPostfix(String infix) {
         Stack<Character> stack = new Stack<>();
         StringBuilder postfix = new StringBuilder();
@@ -27,6 +95,7 @@ public class Converter {
         while (!stack.isEmpty()) {
             postfix.append(stack.pop());
         }
+
         return postfix.toString();
     }
 
@@ -79,60 +148,12 @@ public class Converter {
         return stack.peek();
     }
 
-    public static int evaluatePostfix(String postfix) {
-        Stack<Integer> stack = new Stack<>();
-
-        for (char c : postfix.toCharArray()) {
-            if (Character.isDigit(c)) {
-                stack.push(c - '0');
-            } else {
-                int operand2 = stack.pop();
-                int operand1 = stack.pop();
-                switch (c) {
-                    case '+': stack.push(operand1 + operand2); break;
-                    case '-': stack.push(operand1 - operand2); break;
-                    case '*': stack.push(operand1 * operand2); break;
-                    case '/': stack.push(operand1 / operand2); break;
-                }
-            }
-        }
-
-        return stack.pop();
-    }
-
-    public static int evaluatePrefix(String prefix) {
-        Stack<Integer> stack = new Stack<>();
-
-        for (int i = prefix.length() - 1; i >= 0; i--) {
-            char c = prefix.charAt(i);
-            if (Character.isDigit(c)) {
-                stack.push(c - '0');
-            } else {
-                int operand1 = stack.pop();
-                int operand2 = stack.pop();
-                switch (c) {
-                    case '+': stack.push(operand1 + operand2); break;
-                    case '-': stack.push(operand1 - operand2); break;
-                    case '*': stack.push(operand1 * operand2); break;
-                    case '/': stack.push(operand1 / operand2); break;
-                }
-            }
-        }
-
-        return stack.pop();
-    }
-
     private static int precedence(char c) {
-        switch (c) {
-            case '+':
-            case '-':
-                return 1;
-            case '*':
-            case '/':
-                return 2;
-            case '^':
-                return 3;
-        }
-        return -1;
+        return switch (c) {
+            case '+', '-' -> 1;
+            case '*', '/' -> 2;
+            case '^' -> 3;
+            default -> -1;
+        };
     }
 }

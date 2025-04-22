@@ -18,42 +18,70 @@ public class Main {
             scanner.nextLine();
 
             switch (choice) {
-                case 1:
+                case 1 -> {
                     System.out.print("Введіть інфіксну форму: ");
                     String infix = scanner.nextLine();
                     System.out.println("Постфіксна форма: " + Converter.infixToPostfix(infix));
-                    break;
-                case 2:
+                }
+                case 2 -> {
                     System.out.print("Введіть інфіксну форму: ");
-                    infix = scanner.nextLine();
+                    String infix = scanner.nextLine();
                     System.out.println("Префіксна форма: " + Converter.infixToPrefix(infix));
-                    break;
-                case 3:
+                }
+                case 3 -> {
                     System.out.print("Введіть постфіксну форму: ");
                     String postfix = scanner.nextLine();
                     System.out.println("Інфіксна форма: " + Converter.postfixToInfix(postfix));
-                    break;
-                case 4:
+                }
+                case 4 -> {
                     System.out.print("Введіть префіксну форму: ");
                     String prefix = scanner.nextLine();
                     System.out.println("Інфіксна форма: " + Converter.prefixToInfix(prefix));
-                    break;
-                case 5:
+                }
+                case 5 -> {
                     System.out.print("Введіть постфіксну форму: ");
-                    postfix = scanner.nextLine();
-                    System.out.println("Результат: " + Converter.evaluatePostfix(postfix));
-                    break;
-                case 6:
+                    String postfix = scanner.nextLine();
+                    String variables = extractVariables(postfix);
+                    char[] variableArray = variables.toCharArray();
+                    double[] values = new double[variableArray.length];
+
+                    for (int i = 0; i < variableArray.length; i++) {
+                        System.out.print("Введіть значення для " + variableArray[i] + ": ");
+                        values[i] = scanner.nextDouble();
+                    }
+
+                    System.out.println("Результат: " + Converter.evaluatePostfix(postfix, variableArray, values));
+                }
+                case 6 -> {
                     System.out.print("Введіть префіксну форму: ");
-                    prefix = scanner.nextLine();
-                    System.out.println("Результат: " + Converter.evaluatePrefix(prefix));
-                    break;
-                case 7:
+                    String prefix = scanner.nextLine();
+                    String variables = extractVariables(prefix);
+                    char[] variableArray = variables.toCharArray();
+                    double[] values = new double[variableArray.length];
+
+                    for (int i = 0; i < variableArray.length; i++) {
+                        System.out.print("Введіть значення для " + variableArray[i] + ": ");
+                        values[i] = scanner.nextDouble();
+                    }
+
+                    System.out.println("Результат: " + Converter.evaluatePrefix(prefix, variableArray, values));
+                }
+                case 7 -> {
                     System.out.println("Вихід...");
                     return;
-                default:
-                    System.out.println("Невірний вибір. Спробуйте ще раз.");
+                }
+                default -> System.out.println("Невірний вибір. Спробуйте ще раз.");
             }
         }
+    }
+
+    private static String extractVariables(String expression) {
+        StringBuilder uniqueVariables = new StringBuilder();
+        for (char c : expression.toCharArray()) {
+            if (Character.isLetter(c) && uniqueVariables.indexOf(String.valueOf(c)) == -1) {
+                uniqueVariables.append(c);
+            }
+        }
+        return uniqueVariables.toString();
     }
 }
